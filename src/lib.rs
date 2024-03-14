@@ -2,7 +2,7 @@ use anyhow::Result;
 use changelog::{Change, Changelog, ChangelogBuilder, Release, ReleaseBuilder};
 use chrono::NaiveDate;
 use err_derive::Error;
-use pulldown_cmark::{Event, LinkType, Parser, Tag};
+use pulldown_cmark::{Event, HeadingLevel, LinkType, Parser, Tag};
 use versions::Version;
 use std::fs::File;
 use std::io::prelude::*;
@@ -83,9 +83,9 @@ impl ChangelogParser {
         for event in parser {
             match event {
                 // Headings.
-                Event::Start(Tag::Header(1)) => section = ChangelogSection::Title,
-                Event::End(Tag::Header(1)) => section = ChangelogSection::Description,
-                Event::Start(Tag::Header(2)) => {
+                Event::Start(Tag::Heading(HeadingLevel::H1, ..)) => section = ChangelogSection::Title,
+                Event::End(Tag::Heading(HeadingLevel::H1, ..)) => section = ChangelogSection::Description,
+                Event::Start(Tag::Heading(HeadingLevel::H2, ..)) => {
                     match section {
                         ChangelogSection::Description => {
                             description = accumulator.clone();
@@ -100,7 +100,7 @@ impl ChangelogParser {
 
                     section = ChangelogSection::ReleaseHeader;
                 }
-                Event::Start(Tag::Header(3)) => section = ChangelogSection::ChangesetHeader,
+                Event::Start(Tag::Heading(HeadingLevel::H3, ..)) => section = ChangelogSection::ChangesetHeader,
 
                 // Links.
                 Event::Start(Tag::Link(LinkType::Inline, _, _)) => accumulator.push_str("["),
@@ -196,7 +196,8 @@ impl ChangelogParser {
                 release.date(date);
             }
 
-            if let Some(version) = Version::new(&left) {
+            let version = left.trim_matches(|c| c == '[' || c == ']');
+            if let Some(version) = Version::new(&version) {
                 release.version(version);
             }
         }

@@ -1,13 +1,13 @@
 [package]
-name = "clparse"
-version = "0.9.1"
-description = "A command line tool for parsing CHANGELOG.md files that use the Keep A Changelog format."
+name = "clparser"
+version = "0.1.1"
+description = "A command line tool for parsing CHANGELOG.md files that use the Keep A Changelog format. (fork marcaddeo/clparse)"
 keywords = ["changelog", "parser", "keepachangelog"]
 categories = ["command-line-utilities", "development-tools", "text-processing"]
-homepage = "https://github.com/marcaddeo/clparse"
+homepage = "https://github.com/x42h/clparser"
 readme = "README.md"
-repository = "https://github.com/marcaddeo/clparse"
-documentation = "https://github.com/marcaddeo/clparse#clparse"
+repository = "https://github.com/x42h/clparser"
+documentation = "https://github.com/x42h/clparser"
 authors = ["Marc Addeo <hi@marc.cx>"]
 license = "MIT"
 edition = "2018"
@@ -18,15 +18,15 @@ exclude = [
 ]
 
 [lib]
-name = "clparse"
+name = "clparser"
 path = "src/lib.rs"
 
 [[bin]]
-name = "clparse"
+name = "clparser"
 path = "src/main.rs"
 
 [dependencies]
-pulldown-cmark = "0.5.3"
+pulldown-cmark = { version = "0.9.6", default-features = false }
 chrono = { version = "0.4.7", features = ["serde"] }
 derive_builder = "0.7.2"
 serde = "1.0.100"

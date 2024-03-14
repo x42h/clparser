@@ -2,7 +2,7 @@ use anyhow::Result;
 use clap::{
     app_from_crate, crate_authors, crate_description, crate_name, crate_version, AppSettings, Arg,
 };
-use clparse::ChangelogParser;
+use clparser::ChangelogParser;
 use std::io::{self, Read, Write};
 
 pub fn main() -> Result<()> {

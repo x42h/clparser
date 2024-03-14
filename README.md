@@ -1,40 +1,27 @@
-# `clparse`
+# `clparser`
 
-`clparse` is a command line tool for parsing CHANGELOG files that use the Keep
+`clparser` is a command line tool for parsing CHANGELOG files that use the Keep
 A Changelog format. The CHANGELOG file can be Markdown, JSON, or YAML format
 and can also be output into any of those formats once parsed.
+(fork marcaddeo/clparse)
 
 ## Installation
-
-### Homebrew (macOS)
-
-```
-$ brew install marcaddeo/clsuite/clparse
-```
-
-### Linux
-
-```
-$ curl -LO https://github.com/marcaddeo/clparse/releases/download/0.9.1/clparse-0.9.1-x86_64-unknown-linux-musl.tar.gz
-$ tar xzvf clparse-0.9.1-x86_64-unknown-linux-musl.tar.gz
-$ sudo mv clparse /usr/local/bin/clparse
-```
 
 ### Cargo
 
 ```
-$ cargo install clparse
+$ cargo install clparser
 ```
 
 ## Usage
 
 ```
-clparse 0.9.1
+clparser 0.1.1
 Marc Addeo <hi@marc.cx>
 A command line tool for parsing CHANGELOG.md files that use the Keep A Changelog format.
 
 USAGE:
-    clparse [FLAGS] [OPTIONS] <FILE>
+    clparser [FLAGS] [OPTIONS] <FILE>
 
 FLAGS:
     -h, --help       Prints help information
@@ -56,11 +43,11 @@ ARGS:
 
 ### Examples
 
-By default, `clparse` will parse the input file, and output the changelog in
+By default, `clparser` will parse the input file, and output the changelog in
 markdown format.
 
 ```markdown
-$ clparse CHANGELOG.md
+$ clparser CHANGELOG.md
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -82,22 +69,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add the initial features
 
-[Unreleased]: https://github.com/example/example/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/example/example/compare/v0.0.1...v1.0.0
 [0.0.1]: https://github.com/example/example/releases/tag/v0.0.1
 ```
 
 We can transform the markdown into a format that can be easily used in scripts:
 
 ```json
-$ clparse -f json CHANGELOG.md
+$ clparser -f json CHANGELOG.md
 {
   "title": "Changelog",
   "description": "All notable changes to this project will be documented in this file.\n\nThe format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),\nand this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n\n",
   "releases": [
     {
       "version": null,
-      "link": "https://github.com/example/example/compare/v1.0.0...HEAD",
+      "link": null,
       "date": null,
       "changes": [
         {
@@ -108,7 +93,7 @@ $ clparse -f json CHANGELOG.md
     },
     {
       "version": "1.0.0",
-      "link": "https://github.com/example/example/compare/v0.0.1...v1.0.0",
+      "link": null,
       "date": "2019-06-20",
       "changes": [
         {
@@ -135,10 +120,10 @@ $ clparse -f json CHANGELOG.md
 }
 ```
 
-`clparse` can also parse JSON and YAML representations of the changelog:
+`clparser` can also parse JSON and YAML representations of the changelog:
 
 ```markdown
-$ clparse CHANGELOG.json
+$ clparser CHANGELOG.json
 # Changelog
 All notable changes to this project will be documented in this file.
 
@@ -168,7 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 And finally, we can read from stdin by passing `-` as the `FILE` argument:
 
 ```markdown
-$ clparse -f json CHANGELOG.md | clparse -
+$ clparser -f json CHANGELOG.md | clparser -
 # Changelog
 All notable changes to this project will be documented in this file.
 
