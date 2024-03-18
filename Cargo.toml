@@ -1,6 +1,6 @@
 [package]
 name = "clparser"
-version = "0.1.1"
+version = "0.1.2"
 description = "A command line tool for parsing CHANGELOG.md files that use the Keep A Changelog format. (fork marcaddeo/clparse)"
 keywords = ["changelog", "parser", "keepachangelog"]
 categories = ["command-line-utilities", "development-tools", "text-processing"]

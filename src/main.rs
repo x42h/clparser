@@ -3,13 +3,20 @@ use clap::{
     app_from_crate, crate_authors, crate_description, crate_name, crate_version, AppSettings, Arg,
 };
 use clparser::ChangelogParser;
-use std::io::{self, Read, Write};
+use std::{io::{self, Read, Write}, process};
 
 pub fn main() -> Result<()> {
     let matches = app_from_crate!()
         .setting(AppSettings::DisableHelpSubcommand)
         .setting(AppSettings::ArgRequiredElseHelp)
         .global_setting(AppSettings::ColoredHelp)
+        .arg(
+            Arg::with_name("take")
+                .help("Take only specific release")
+                .takes_value(true)
+                .short("t")
+                .long("take"),
+        )
         .arg(
             Arg::with_name("format")
                 .help("Sets the output format of the parsed CHANGELOG [default: markdown]")
@@ -76,7 +83,22 @@ pub fn main() -> Result<()> {
             format!("{}", serde_yaml::to_string(&changelog)?)
         }
         "markdown" | "md" => {
-            format!("{}", &changelog)
+            if let Some(arg_value) = matches.value_of("take") {
+                if let Ok(take) = arg_value.parse::<usize>() {
+                    let releases = &changelog.releases().clone();
+                    if take < releases.len() {
+                        format!("{}", releases[take])
+                    } else {
+                        eprintln!("Error: Invalid take index");
+                        process::exit(1);
+                    }
+                } else {
+                    eprintln!("Error: Invalid take value");
+                    process::exit(1);
+                }
+            } else {
+                format!("{}", &changelog)
+            }
         }
         _ => unreachable!(),
     };
